@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PurePath 2026 | مِحراب التزكية</title>
+    <title>Soul Clarity 2026 | مِحراب التزكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,6 +11,7 @@
             --accent: #00d2ff;
             --success: #00f2fe;
             --fail: #f53803;
+            --pending: #4a5568;
             --card-glass: rgba(255, 255, 255, 0.05);
         }
 
@@ -24,7 +25,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -34,15 +35,16 @@
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             margin: 0;
             background: linear-gradient(to right, #00d2ff, #3a7bd5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
+            text-transform: uppercase;
         }
 
-        header p { color: #a0aec0; letter-spacing: 1px; }
+        header p { color: #a0aec0; font-size: 1.2rem; margin-top: 10px; }
 
         .dashboard {
             display: grid;
@@ -58,8 +60,9 @@
             border: 1px solid rgba(255,255,255,0.1);
             text-align: center;
             backdrop-filter: blur(10px);
+            transition: 0.3s;
         }
-
+        .stat-box:hover { border-color: var(--accent); }
         .stat-box h2 { font-size: 2.5rem; margin: 10px 0; color: var(--accent); }
 
         .grid {
@@ -68,6 +71,7 @@
             gap: 20px;
         }
 
+        /* Card States */
         .day-card {
             background: var(--card-glass);
             border-radius: 24px;
@@ -76,43 +80,45 @@
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow: hidden;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .day-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
-        }
+        .day-card:hover { transform: translateY(-8px); }
 
-        .day-card.is-success { border-right: 5px solid var(--success); }
-        .day-card.is-fail { border-right: 5px solid var(--fail); }
+        /* Success Style */
+        .day-card.is-success { border-bottom: 5px solid var(--success); background: rgba(0, 210, 255, 0.05); }
+        .is-success .status-icon { color: var(--success); background: rgba(0, 242, 254, 0.1); }
 
-        .day-label { font-size: 0.9rem; color: #718096; margin-bottom: 5px; display: block; }
-        .day-date { font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 15px; }
+        /* Fail Style */
+        .day-card.is-fail { border-bottom: 5px solid var(--fail); background: rgba(245, 56, 3, 0.05); }
+        .is-fail .status-icon { color: var(--fail); background: rgba(245, 56, 3, 0.1); }
+
+        /* Pending Style */
+        .day-card.is-pending { opacity: 0.5; filter: grayscale(0.8); border: 1px dashed rgba(255,255,255,0.2); }
+        .is-pending .status-icon { color: var(--pending); background: rgba(255,255,255,0.05); }
+
+        .day-label { font-size: 0.8rem; color: #718096; text-transform: uppercase; }
+        .day-date { font-weight: bold; font-size: 1rem; display: block; margin-bottom: 15px; color: #e2e8f0; }
 
         .status-icon {
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
+            width: 55px;
+            height: 55px;
+            line-height: 55px;
             border-radius: 50%;
             margin: 0 auto 15px;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
 
-        .is-success .status-icon { background: rgba(0, 242, 254, 0.1); color: var(--success); }
-        .is-fail .status-icon { background: rgba(245, 56, 3, 0.1); color: var(--fail); }
+        .message { font-size: 0.85rem; line-height: 1.5; color: #cbd5e0; min-height: 3em; }
 
-        .message { font-size: 0.8rem; line-height: 1.4; color: #cbd5e0; }
-
-        /* Animation for appearance */
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .day-card { animation: fadeIn 0.5s ease forwards; }
-
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
@@ -120,20 +126,20 @@
 <div class="container">
     <header>
         <h1>Soul Clarity 2026</h1>
-        <p>رحلة الـ 30 يوماً نحو الصفاء النفسي</p>
+        <p>🌙 مِحراب التزكية النفسية - رمضان المبارك</p>
     </header>
 
     <div class="dashboard">
         <div class="stat-box">
-            <p>سجل الانتصار</p>
+            <p>أيام الصفاء (Success)</p>
             <h2 id="winCount">0</h2>
         </div>
         <div class="stat-box">
-            <p>أيام متبقية</p>
-            <h2 id="remainCount">30</h2>
+            <p>أيام الضبابية (Fail)</p>
+            <h2 id="failCount" style="color: var(--fail);">0</h2>
         </div>
         <div class="stat-box">
-            <p>نسبة النجاح</p>
+            <p>معدل النقاء النفسي</p>
             <h2 id="percent">0%</h2>
         </div>
     </div>
@@ -143,44 +149,62 @@
 </div>
 
 <script>
-    async function init() {
+    async function loadJourney() {
         try {
-            const res = await fetch('data.json');
-            const data = await res.json();
+            const response = await fetch('data.json');
+            const data = await response.json();
             const grid = document.getElementById('mainGrid');
             
             let wins = 0;
+            let fails = 0;
+            let totalPassed = 0;
 
             data.forEach((day, index) => {
-                if(day.status) wins++;
-                
+                let statusClass = 'is-pending';
+                let icon = '⏳';
+                let message = 'بانتظار إنجازك..';
+
+                if (day.status === true) {
+                    wins++;
+                    totalPassed++;
+                    statusClass = 'is-success';
+                    icon = '✨';
+                    message = day.msg_success;
+                } else if (day.status === false) {
+                    fails++;
+                    totalPassed++;
+                    statusClass = 'is-fail';
+                    icon = '☁️';
+                    message = day.msg_fail;
+                }
+
                 const card = document.createElement('div');
-                card.className = `day-card ${day.status ? 'is-success' : 'is-fail'}`;
-                card.style.animationDelay = `${index * 0.05}s`;
+                card.className = `day-card ${statusClass}`;
+                card.style.animationDelay = `${index * 0.03}s`;
                 
                 card.innerHTML = `
                     <span class="day-label">يوم ${day.day}</span>
                     <span class="day-date">${day.date}</span>
-                    <div class="status-icon">
-                        ${day.status ? '✨' : '☁️'}
-                    </div>
-                    <p class="message">
-                        ${day.status ? day.msg_success : day.msg_fail}
-                    </p>
+                    <div class="status-icon">${icon}</div>
+                    <p class="message">${message}</p>
                 `;
                 grid.appendChild(card);
             });
 
+            // تحديث الإحصائيات
             document.getElementById('winCount').innerText = wins;
-            document.getElementById('remainCount').innerText = 30 - data.length;
-            document.getElementById('percent').innerText = Math.round((wins / 30) * 100) + "%";
+            document.getElementById('failCount').innerText = fails;
+            
+            const percentage = totalPassed > 0 ? Math.round((wins / totalPassed) * 100) : 0;
+            document.getElementById('percent').innerText = percentage + "%";
 
-        } catch (e) {
-            console.error("خطأ في جلب البيانات:", e);
+        } catch (error) {
+            console.error("Data load error:", error);
+            document.getElementById('mainGrid').innerHTML = "<h3>يرجى تشغيل الملف عبر خادم محلي (Live Server) لرؤية البيانات.</h3>";
         }
     }
 
-    init();
+    loadJourney();
 </script>
 
 </body>
