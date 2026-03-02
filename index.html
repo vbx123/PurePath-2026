@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PurePath 2026 | مِحراب التزكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --accent: #00d2ff;
+            --success: #00f2fe;
+            --fail: #f53803;
+            --card-glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at top, #1a2a44, #0b0f19);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        header p { color: #a0aec0; letter-spacing: 1px; }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .stat-box {
+            background: var(--card-glass);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-box h2 { font-size: 2.5rem; margin: 10px 0; color: var(--accent); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .day-card {
+            background: var(--card-glass);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+        }
+
+        .day-card.is-success { border-right: 5px solid var(--success); }
+        .day-card.is-fail { border-right: 5px solid var(--fail); }
+
+        .day-label { font-size: 0.9rem; color: #718096; margin-bottom: 5px; display: block; }
+        .day-date { font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 15px; }
+
+        .status-icon {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+        }
+
+        .is-success .status-icon { background: rgba(0, 242, 254, 0.1); color: var(--success); }
+        .is-fail .status-icon { background: rgba(245, 56, 3, 0.1); color: var(--fail); }
+
+        .message { font-size: 0.8rem; line-height: 1.4; color: #cbd5e0; }
+
+        /* Animation for appearance */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .day-card { animation: fadeIn 0.5s ease forwards; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Soul Clarity 2026</h1>
+        <p>رحلة الـ 30 يوماً نحو الصفاء النفسي</p>
+    </header>
+
+    <div class="dashboard">
+        <div class="stat-box">
+            <p>سجل الانتصار</p>
+            <h2 id="winCount">0</h2>
+        </div>
+        <div class="stat-box">
+            <p>أيام متبقية</p>
+            <h2 id="remainCount">30</h2>
+        </div>
+        <div class="stat-box">
+            <p>نسبة النجاح</p>
+            <h2 id="percent">0%</h2>
+        </div>
+    </div>
+
+    <div class="grid" id="mainGrid">
+        </div>
+</div>
+
+<script>
+    async function init() {
+        try {
+            const res = await fetch('data.json');
+            const data = await res.json();
+            const grid = document.getElementById('mainGrid');
+            
+            let wins = 0;
+
+            data.forEach((day, index) => {
+                if(day.status) wins++;
+                
+                const card = document.createElement('div');
+                card.className = `day-card ${day.status ? 'is-success' : 'is-fail'}`;
+                card.style.animationDelay = `${index * 0.05}s`;
+                
+                card.innerHTML = `
+                    <span class="day-label">يوم ${day.day}</span>
+                    <span class="day-date">${day.date}</span>
+                    <div class="status-icon">
+                        ${day.status ? '✨' : '☁️'}
+                    </div>
+                    <p class="message">
+                        ${day.status ? day.msg_success : day.msg_fail}
+                    </p>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('winCount').innerText = wins;
+            document.getElementById('remainCount').innerText = 30 - data.length;
+            document.getElementById('percent').innerText = Math.round((wins / 30) * 100) + "%";
+
+        } catch (e) {
+            console.error("خطأ في جلب البيانات:", e);
+        }
+    }
+
+    init();
+</script>
+
+</body>
+</html>
