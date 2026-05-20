@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دعوة فرح رقمية احترافية</title>
-    <!-- Google Fonts للخطوط العربية الاحترافية -->
+    <title>دعوة فرح تفاعلية ملكية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome للايقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -19,6 +17,17 @@
             --text-color: #333333;
             --card-bg: #ffffff;
             --accent-color: #d4af37;
+            --input-bg: #faf7f2;
+        }
+
+        /* ألوان الوضع الليلي السحرية */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --primary-color: #d4af37;
+            --secondary-color: #aa9070;
+            --input-bg: #2d2d2d;
         }
 
         * {
@@ -26,17 +35,19 @@
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
+            transition: background-color 0.4s, color 0.4s;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.8;
-            padding-bottom: 60px;
+            padding-bottom: 80px;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, .brand-font {
-            font-family: 'Reem+Kufi', 'Cairo', sans-serif;
+        h1, h2, h3 {
+            font-family: 'Reem Kufi', 'Cairo', sans-serif;
             font-weight: 700;
         }
 
@@ -44,23 +55,76 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 10;
         }
 
-        /* كارت الهيرو الرئيسي */
+        /* أزرار التحكم الطائرة (موسيقى + ثيم) */
+        .floating-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+        }
+
+        .control-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--secondary-color);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .music-playing {
+            animation: spin 4s linear infinite;
+        }
+
+        /* تساقط الورد */
+        .petal {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 1.5rem;
+            animation: fall linear forwards;
+        }
+
+        /* كروت الأنميشن المخفية افتراضياً */
+        .animate-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animate-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* الهيرو الرئيسي */
         .hero-card {
             background: var(--card-bg);
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             overflow: hidden;
             text-align: center;
-            position: relative;
             margin-bottom: 25px;
-            border: 1px solid rgba(124, 92, 67, 0.1);
+            border: 1px solid rgba(124, 92, 67, 0.15);
         }
 
         .hero-img {
             width: 100%;
-            height: 320px;
+            height: 340px;
             object-fit: cover;
         }
 
@@ -79,7 +143,7 @@
         }
 
         .names-wrapper {
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--primary-color);
             margin: 15px 0;
             display: flex;
@@ -103,20 +167,15 @@
             text-align: center;
         }
 
-        .countdown-title {
-            font-size: 1rem;
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
         .timer {
             display: flex;
             justify-content: space-around;
             direction: ltr;
+            margin-top: 10px;
         }
 
         .time-box {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             padding: 10px;
             border-radius: 12px;
             width: 65px;
@@ -130,17 +189,17 @@
 
         .time-label {
             font-size: 0.75rem;
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
-        /* كروت التهاني من الأهل والتفاصيل */
+        /* الكروت القياسية */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid rgba(124, 92, 67, 0.08);
         }
 
         .section-title {
@@ -161,18 +220,12 @@
         }
 
         .greeting-item {
-            background: #faf7f2;
+            background: var(--input-bg);
             padding: 15px;
             border-radius: 15px;
             border-right: 4px solid var(--secondary-color);
         }
 
-        .greeting-item h4 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-
-        /* التفاصيل والموقع */
         .info-row {
             display: flex;
             align-items: center;
@@ -181,7 +234,7 @@
         }
 
         .info-icon {
-            background: #faf7f2;
+            background: var(--input-bg);
             color: var(--primary-color);
             width: 45px;
             height: 45px;
@@ -193,7 +246,7 @@
             flex-shrink: 0;
         }
 
-        .btn-map {
+        .btn-general {
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -204,11 +257,17 @@
             border-radius: 50px;
             margin-top: 10px;
             font-size: 0.9rem;
-            transition: 0.3s;
+            border: none;
+            cursor: pointer;
         }
 
-        .btn-map:hover {
-            background: var(--secondary-color);
+        .btn-whatsapp {
+            background: #25D366;
+            width: 100%;
+            justify-content: center;
+            margin-top: 5px;
+            font-size: 1rem;
+            font-weight: bold;
         }
 
         /* معرض الصور */
@@ -223,21 +282,45 @@
             height: 120px;
             object-fit: cover;
             border-radius: 12px;
-            transition: 0.3s;
+            cursor: pointer;
         }
 
-        .gallery-grid img:hover {
-            transform: scale(1.05);
+        /* نظام نافذة تكبير الصور (Lightbox) */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        /* قسم التعليقات والرسائل للضيوف */
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            color: white; font-size: 2rem; cursor: pointer;
+        }
+
+        /* التعليقات */
         .comment-item {
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             padding: 15px 0;
-        }
-
-        .comment-item:last-child {
-            border-bottom: none;
         }
 
         .comment-header {
@@ -253,25 +336,17 @@
 
         .comment-badge {
             font-size: 0.75rem;
-            background: #eee;
+            background: var(--input-bg);
             padding: 2px 8px;
             border-radius: 10px;
-            color: #666;
         }
 
-        .comment-text {
-            font-size: 0.95rem;
-            color: #555;
-        }
-
-        /* بار التلجرام الثابت بالأسفل لإرسال التهنئة */
+        /* بار التلجرام الثابت */
         .telegram-bar {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            bottom: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
             padding: 12px 20px;
             display: flex;
             align-items: center;
@@ -281,80 +356,75 @@
             margin: 0 auto;
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
+            border: 1px solid rgba(124, 92, 67, 0.15);
         }
 
         .code-box {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: #f3f3f3;
+            background: var(--input-bg);
             padding: 6px 12px;
             border-radius: 10px;
-            font-size: 0.85rem;
-        }
-
-        .code-val {
-            font-weight: bold;
-            color: #333;
-            font-family: monospace;
-            font-size: 1rem;
-        }
-
-        .btn-copy {
-            background: none;
-            border: none;
-            color: var(--secondary-color);
-            cursor: pointer;
-            font-size: 1rem;
         }
 
         .btn-telegram {
             background: #24A1DE;
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 50px;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 8px;
             font-weight: bold;
-            transition: 0.3s;
         }
 
-        .btn-telegram:hover {
-            background: #1a82b8;
+        /* الأنميشنز */
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-
-        /* أنيميشن نبض القلب */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
+    <div class="floating-controls">
+        <button class="control-btn" id="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="control-btn" id="music-toggle" onclick="toggleMusic()" title="تشغيل/كتم الصوت">
+            <i class="fa-solid fa-music"></i>
+        </button>
+    </div>
+
+    <audio id="bg-audio" loop></audio>
+
     <div class="container">
-        <!-- الكارت الرئيسي -->
-        <section class="hero-card">
+        <section class="hero-card animate-scroll">
             <img id="hero-img" src="" alt="صورة المناسبة" class="hero-img">
             <div class="hero-content">
                 <span id="event-badge" class="event-badge"></span>
-                <h1 id="hero-title" style="font-size: 1.3rem; color: #888;"></h1>
+                <h1 id="hero-title" style="font-size: 1.2rem; opacity: 0.7;"></h1>
                 <div class="names-wrapper">
                     <span id="groom-name"></span>
                     <i class="fa-solid fa-heart"></i>
                     <span id="bride-name"></span>
                 </div>
-                <p id="welcome-message" style="color: #666; font-size: 0.95rem;"></p>
+                <p id="welcome-message" style="opacity: 0.8; font-size: 0.95rem;"></p>
             </div>
         </section>
 
-        <!-- العداد التنازلي -->
-        <section class="countdown-section">
-            <p class="countdown-title"><i class="fa-regular fa-clock"></i> المتبقي على ليلة العمر</p>
+        <section class="countdown-section animate-scroll">
+            <p><i class="fa-regular fa-clock"></i> المتبقي على ليلة العمر</p>
             <div class="timer">
                 <div class="time-box"><span id="days" class="time-num">00</span><span class="time-label">أيام</span></div>
                 <div class="time-box"><span id="hours" class="time-num">00</span><span class="time-label">ساعات</span></div>
@@ -363,113 +433,120 @@
             </div>
         </section>
 
-        <!-- تهنئة الأهل -->
-        <section class="card">
-            <h3 class="section-title"><i class="fa-solid fa-comments-rose"></i> كلمة أهل العروسين</h3>
-            <div id="family-greetings-container" class="greetings-grid">
-                <!-- الأكواد بتنزل هنا ديناميكياً -->
-            </div>
+        <section class="card animate-scroll">
+            <h3 class="section-title"><i class="fa-solid fa-share-nodes"></i> مشاركة الفرحة</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 12px; opacity: 0.8;">شارك هذه الدعوة الأنيقة مع أحبابك وأصدقائك عبر الواتساب مباشرة:</p>
+            <button class="btn-general btn-whatsapp" onclick="shareOnWhatsApp()">
+                <i class="fa-brands fa-whatsapp"></i> إرسال الدعوة عبر واتساب
+            </button>
         </section>
 
-        <!-- تفاصيل الموعد والمكان -->
-        <section class="card">
+        <section class="card animate-scroll">
+            <h3 class="section-title"><i class="fa-solid fa-dove"></i> كلمة أهل العروسين</h3>
+            <div id="family-greetings-container" class="greetings-grid"></div>
+        </section>
+
+        <section class="card animate-scroll">
             <h3 class="section-title"><i class="fa-regular fa-calendar-check"></i> تفاصيل الحفل</h3>
             <div class="info-row">
                 <div class="info-icon"><i class="fa-regular fa-calendar"></i></div>
                 <div>
                     <p style="font-weight: bold;">التاريخ</p>
-                    <p id="event-date" style="font-size: 0.9rem; color: #555;"></p>
+                    <p id="event-date" style="font-size: 0.9rem; opacity: 0.8;"></p>
                 </div>
             </div>
             <div class="info-row">
                 <div class="info-icon"><i class="fa-regular fa-clock"></i></div>
                 <div>
                     <p style="font-weight: bold;">الوقت</p>
-                    <p id="event-time" style="font-size: 0.9rem; color: #555;"></p>
+                    <p id="event-time" style="font-size: 0.9rem; opacity: 0.8;"></p>
                 </div>
             </div>
             <div class="info-row">
                 <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
                 <div>
                     <p style="font-weight: bold;">المكان</p>
-                    <p id="venue-name" style="font-size: 0.9rem; color: #555; font-weight: 500;"></p>
-                    <p id="venue-address" style="font-size: 0.85rem; color: #777;"></p>
-                    <a id="venue-map" href="#" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> عرض على الخريطة</a>
+                    <p id="venue-name" style="font-size: 0.9rem; opacity: 0.9; font-weight: 500;"></p>
+                    <p id="venue-address" style="font-size: 0.85rem; opacity: 0.7;"></p>
+                    <a id="venue-map" href="#" target="_blank" class="btn-general"><i class="fa-solid fa-map-location-dot"></i> عرض على الخريطة</a>
                 </div>
             </div>
         </section>
 
-        <!-- معرض الصور -->
-        <section class="card">
+        <section class="card animate-scroll">
             <h3 class="section-title"><i class="fa-regular fa-images"></i> ألبوم الصور</h3>
-            <div id="gallery-container" class="gallery-grid">
-                <!-- الصور بتنزل هنا -->
-            </div>
+            <div id="gallery-container" class="gallery-grid"></div>
         </section>
 
-        <!-- رسائل المهنئين والتعليقات -->
-        <section class="card" style="margin-bottom: 40px;">
+        <section class="card animate-scroll" style="margin-bottom: 40px;">
             <h3 class="section-title"><i class="fa-regular fa-comment-dots"></i> تبريكات المهنئين</h3>
-            <div id="comments-container">
-                <!-- التعليقات بتنزل هنا -->
-            </div>
+            <div id="comments-container"></div>
         </section>
     </div>
 
-    <!-- البار السفلي للتلجرام والكود الرقمي -->
     <div class="telegram-bar">
         <div class="code-box">
-            <span>كود الدعوة:</span>
-            <span id="event-code" class="code-val">------</span>
-            <button class="btn-copy" onclick="copyEventCode()" title="نسخ الكود"><i class="fa-regular fa-copy"></i></button>
+            <span style="font-size:0.85rem;">كود الدعوة:</span>
+            <span id="event-code" style="font-weight:bold; font-family:monospace; font-size:1rem;">------</span>
+            <button style="background:none; border:none; color:var(--secondary-color); cursor:pointer;" onclick="copyEventCode()"><i class="fa-regular fa-copy"></i></button>
         </div>
         <a id="tg-link" href="#" target="_blank" class="btn-telegram">
             <i class="fa-brands fa-telegram"></i> أرسل تهنئتك الآن
         </a>
     </div>
 
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
     <script>
-        // دالة لجلب البيانات وتوزيعها في الصفحة
-        async function loadEventData() {
+        let whatsappShareText = "";
+
+        // 1. جلب البيانات وتوزيعها ديناميكياً
+        async function initPage() {
             try {
                 const response = await fetch('data.json');
                 const data = await response.json();
 
-                // تحديث الهيرو الرئيسي
+                // الهيرو
                 document.getElementById('hero-img').src = data.hero.main_image;
                 document.getElementById('hero-title').innerText = data.hero.title;
                 document.getElementById('groom-name').innerText = data.hero.groom_name;
                 document.getElementById('bride-name').innerText = data.hero.bride_name;
                 document.getElementById('welcome-message').innerText = data.hero.welcome_message;
-                
-                // نوع المناسبة في بادج
                 document.getElementById('event-badge').innerText = data.event_type === "wedding" ? "حفل زفاف" : "مناسبة سعيدة";
+
+                // تجهيز نص الواتساب
+                whatsappShareText = data.share_text_template;
+
+                // الموسيقى
+                document.getElementById('bg-audio').src = data.background_music_url;
 
                 // تهنئة الأهل
                 const greetingsContainer = document.getElementById('family-greetings-container');
                 data.family_greetings.forEach(g => {
                     greetingsContainer.innerHTML += `
                         <div class="greeting-item">
-                            <h4>${g.side}</h4>
-                            <p style="font-size:0.9rem; color:#555;">${g.text}</p>
-                        </div>
-                    `;
+                            <h4 style="color:var(--primary-color); margin-bottom:5px;">${g.side}</h4>
+                            <p style="font-size:0.9rem; opacity:0.9;">${g.text}</p>
+                        </div>`;
                 });
 
-                // التفاصيل والوقت والمكان
+                // الموعد والمكان
                 document.getElementById('event-date').innerText = data.details.date_text;
                 document.getElementById('event-time').innerText = data.details.time_text;
                 document.getElementById('venue-name').innerText = data.details.venue_name;
                 document.getElementById('venue-address').innerText = data.details.venue_address;
                 document.getElementById('venue-map').href = data.details.venue_map_url;
 
-                // معرض الصور
+                // ألبوم الصور مع تفعيل ميزة التكبير (Lightbox)
                 const galleryContainer = document.getElementById('gallery-container');
                 data.gallery.forEach(imgUrl => {
-                    galleryContainer.innerHTML += `<img src="${imgUrl}" alt="صورة العروسين">`;
+                    galleryContainer.innerHTML += `<img src="${imgUrl}" onclick="openLightbox('${imgUrl}')" alt="صورة الفرح">`;
                 });
 
-                // تبريكات المهنئين
+                // التعليقات
                 const commentsContainer = document.getElementById('comments-container');
                 data.congratulations.forEach(c => {
                     commentsContainer.innerHTML += `
@@ -478,61 +555,129 @@
                                 <span class="comment-name">${c.name}</span>
                                 <span class="comment-badge">${c.relation}</span>
                             </div>
-                            <p class="comment-text">${c.message}</p>
-                        </div>
-                    `;
+                            <p style="font-size:0.95rem; opacity:0.85;">${c.message}</p>
+                        </div>`;
                 });
 
-                // اكواد التلجرام والنسخ
+                // أكواد التلجرام
                 document.getElementById('event-code').innerText = data.event_code;
                 document.getElementById('tg-link').href = data.telegram_bot_url;
 
-                // تشغيل العداد التنازلي بناءً على التاريخ القادم من الـ JSON
+                // تشغيل العداد والميزات البصرية
                 initCountdown(data.details.date_iso);
+                initAutoTheme();
+                setInterval(createPetal, 400);
+                initScrollAnimation();
 
             } catch (error) {
-                console.error("خطأ في قراءة ملف الـ JSON أو البيانات:", error);
+                console.error("حدث خطأ أثناء تحميل البيانات:", error);
             }
         }
 
-        // دالة العداد التنازلي
+        // 2. ميزة العداد التنازلي
         function initCountdown(dateString) {
-            const targetDate = new Date(dateString).getTime();
-
-            const interval = setInterval(() => {
+            const target = new Date(dateString).getTime();
+            const timerInterval = setInterval(() => {
                 const now = new Date().getTime();
-                const difference = targetDate - now;
+                const diff = target - now;
 
-                if (difference <= 0) {
-                    clearInterval(interval);
-                    document.querySelector('.countdown-section').innerHTML = "<p style='font-size:1.2rem; font-weight:bold;'>لقد بدأت مراسم الحفل بالفرحة والسرور! 🎉</p>";
+                if (diff <= 0) {
+                    clearInterval(timerInterval);
+                    document.querySelector('.countdown-section').innerHTML = "<p style='font-weight:bold; font-size:1.1rem;'>بدأت مراسم الفرحة والسرور الآن! 🎉</p>";
                     return;
                 }
 
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById('days').innerText = String(days).padStart(2, '0');
-                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+                document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }, 1000);
         }
 
-        // دالة نسخ الكود تلقائياً
+        // 3. ميزة تساقط أوراق الورد والقلوب
+        function createPetal() {
+            const items = ['🌸', '❤️', '🌹', '✨'];
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            petal.innerText = items[Math.floor(Math.random() * items.length)];
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 3 + 4 + 's';
+            petal.style.opacity = Math.random() * 0.7 + 0.3;
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 7000);
+        }
+
+        // 4. ميزة التحكم في تشغيل الموسيقى الخلفية
+        function toggleMusic() {
+            const audio = document.getElementById('bg-audio');
+            const icon = document.getElementById('music-toggle').querySelector('i');
+            if (audio.paused) {
+                audio.play().catch(e => alert("اضغط أولاً على أي مكان في الصفحة للسماح بتشغيل الصوت."));
+                icon.classList.add('music-playing');
+            } else {
+                audio.pause();
+                icon.classList.remove('music-playing');
+            }
+        }
+
+        // 5. ميزة الوضع الليلي التلقائي واليدوي
+        function initAutoTheme() {
+            const hour = new Date().getHours();
+            if (hour < 6 || hour > 18) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-toggle').querySelector('i').className = "fa-solid fa-sun";
+            }
+        }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const icon = document.getElementById('theme-toggle').querySelector('i');
+            if (current === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                icon.className = "fa-solid fa-moon";
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                icon.className = "fa-solid fa-sun";
+            }
+        }
+
+        // 6. ميزة الأنميشن عند التمرير
+        function initScrollAnimation() {
+            const cards = document.querySelectorAll('.animate-scroll');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            cards.forEach(card => observer.observe(card));
+        }
+
+        // 7. ميزة مكبر الصور (Lightbox)
+        function openLightbox(url) {
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox').classList.add('active');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // 8. ميزة المشاركة عبر واتساب
+        function shareOnWhatsApp() {
+            const pageUrl = window.location.href;
+            const fullMessage = encodeURIComponent(whatsappShareText + pageUrl);
+            window.open(`https://api.whatsapp.com/send?text=${fullMessage}`, '_blank');
+        }
+
+        // 9. ميزة نسخ كود التحلجرام
         function copyEventCode() {
             const code = document.getElementById('event-code').innerText;
             navigator.clipboard.writeText(code).then(() => {
-                alert('تم نسخ كود التهنئة: ' + code + ' \nيمكنك إرساله الآن للبوت مباشرة.');
-            }).catch(err => {
-                console.error('فشل النسخ:', err);
+                alert('تم نسخ الكود بنجاح: ' + code + '\nانسخه الآن في محادثة البوت لإرسال تعليقك.');
             });
         }
 
-        // تشغيل الجلب فور تحميل الصفحة
-        window.onload = loadEventData;
+        window.onload = initPage;
     </script>
 </body>
     </html>
