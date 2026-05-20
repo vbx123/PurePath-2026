@@ -3,209 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soul Clarity 2026 | مِحراب التزكية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>دعوة فرح رقمية احترافية</title>
+    <!-- Google Fonts للخطوط العربية الاحترافية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome للايقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --bg: #0b0f19;
-            --accent: #00d2ff;
-            --success: #00f2fe;
-            --fail: #f53803;
-            --pending: #4a5568;
-            --card-glass: rgba(255, 255, 255, 0.05);
+            --primary-color: #7c5c43;
+            --secondary-color: #bfa38a;
+            --bg-color: #fcf9f5;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --accent-color: #d4af37;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle at top, #1a2a44, #0b0f19);
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            padding-bottom: 60px;
+        }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Reem+Kufi', 'Cairo', sans-serif;
+            font-weight: 700;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 600px;
             margin: 0 auto;
+            padding: 20px;
         }
 
-        header {
+        /* كارت الهيرو الرئيسي */
+        .hero-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
             text-align: center;
-            padding: 40px 0;
+            position: relative;
+            margin-bottom: 25px;
+            border: 1px solid rgba(124, 92, 67, 0.1);
         }
 
-        header h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin: 0;
-            background: linear-gradient(to right, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            text-transform: uppercase;
+        .hero-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
         }
 
-        header p { color: #a0aec0; font-size: 1.2rem; margin-top: 10px; }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 50px;
+        .hero-content {
+            padding: 30px 20px;
         }
 
-        .stat-box {
-            background: var(--card-glass);
-            padding: 25px;
+        .event-badge {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .names-wrapper {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .names-wrapper i {
+            color: #e04f5f;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* العداد التنازلي */
+        .countdown-section {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
             border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 25px;
             text-align: center;
-            backdrop-filter: blur(10px);
+        }
+
+        .countdown-title {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            direction: ltr;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 12px;
+            width: 65px;
+        }
+
+        .time-num {
+            font-size: 1.4rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* كروت التهاني من الأهل والتفاصيل */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed rgba(191, 163, 138, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .greetings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .greeting-item {
+            background: #faf7f2;
+            padding: 15px;
+            border-radius: 15px;
+            border-right: 4px solid var(--secondary-color);
+        }
+
+        .greeting-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        /* التفاصيل والموقع */
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-icon {
+            background: #faf7f2;
+            color: var(--primary-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .btn-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-top: 10px;
+            font-size: 0.9rem;
             transition: 0.3s;
         }
-        .stat-box:hover { border-color: var(--accent); }
-        .stat-box h2 { font-size: 2.5rem; margin: 10px 0; color: var(--accent); }
 
-        .grid {
+        .btn-map:hover {
+            background: var(--secondary-color);
+        }
+
+        /* معرض الصور */
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
-        /* Card States */
-        .day-card {
-            background: var(--card-glass);
-            border-radius: 24px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            animation: fadeIn 0.5s ease forwards;
+        .gallery-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: 0.3s;
         }
 
-        .day-card:hover { transform: translateY(-8px); }
-
-        /* Success Style */
-        .day-card.is-success { border-bottom: 5px solid var(--success); background: rgba(0, 210, 255, 0.05); }
-        .is-success .status-icon { color: var(--success); background: rgba(0, 242, 254, 0.1); }
-
-        /* Fail Style */
-        .day-card.is-fail { border-bottom: 5px solid var(--fail); background: rgba(245, 56, 3, 0.05); }
-        .is-fail .status-icon { color: var(--fail); background: rgba(245, 56, 3, 0.1); }
-
-        /* Pending Style */
-        .day-card.is-pending { opacity: 0.5; filter: grayscale(0.8); border: 1px dashed rgba(255,255,255,0.2); }
-        .is-pending .status-icon { color: var(--pending); background: rgba(255,255,255,0.05); }
-
-        .day-label { font-size: 0.8rem; color: #718096; text-transform: uppercase; }
-        .day-date { font-weight: bold; font-size: 1rem; display: block; margin-bottom: 15px; color: #e2e8f0; }
-
-        .status-icon {
-            width: 55px;
-            height: 55px;
-            line-height: 55px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            font-size: 1.6rem;
+        .gallery-grid img:hover {
+            transform: scale(1.05);
         }
 
-        .message { font-size: 0.85rem; line-height: 1.5; color: #cbd5e0; min-height: 3em; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* قسم التعليقات والرسائل للضيوف */
+        .comment-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 0;
         }
 
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: repeat(2, 1fr); }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .comment-name {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .comment-badge {
+            font-size: 0.75rem;
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: #666;
+        }
+
+        .comment-text {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* بار التلجرام الثابت بالأسفل لإرسال التهنئة */
+        .telegram-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            max-width: 600px;
+            margin: 0 auto;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .code-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f3f3f3;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .code-val {
+            font-weight: bold;
+            color: #333;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .btn-copy {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-telegram {
+            background: #24A1DE;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-telegram:hover {
+            background: #1a82b8;
+        }
+
+        /* أنيميشن نبض القلب */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Soul Clarity 2026</h1>
-        <p>🌙 مِحراب التزكية النفسية - رمضان المبارك</p>
-    </header>
+    <div class="container">
+        <!-- الكارت الرئيسي -->
+        <section class="hero-card">
+            <img id="hero-img" src="" alt="صورة المناسبة" class="hero-img">
+            <div class="hero-content">
+                <span id="event-badge" class="event-badge"></span>
+                <h1 id="hero-title" style="font-size: 1.3rem; color: #888;"></h1>
+                <div class="names-wrapper">
+                    <span id="groom-name"></span>
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="bride-name"></span>
+                </div>
+                <p id="welcome-message" style="color: #666; font-size: 0.95rem;"></p>
+            </div>
+        </section>
 
-    <div class="dashboard">
-        <div class="stat-box">
-            <p>أيام الصفاء (Success)</p>
-            <h2 id="winCount">0</h2>
-        </div>
-        <div class="stat-box">
-            <p>أيام الضبابية (Fail)</p>
-            <h2 id="failCount" style="color: var(--fail);">0</h2>
-        </div>
-        <div class="stat-box">
-            <p>معدل النقاء النفسي</p>
-            <h2 id="percent">0%</h2>
-        </div>
+        <!-- العداد التنازلي -->
+        <section class="countdown-section">
+            <p class="countdown-title"><i class="fa-regular fa-clock"></i> المتبقي على ليلة العمر</p>
+            <div class="timer">
+                <div class="time-box"><span id="days" class="time-num">00</span><span class="time-label">أيام</span></div>
+                <div class="time-box"><span id="hours" class="time-num">00</span><span class="time-label">ساعات</span></div>
+                <div class="time-box"><span id="minutes" class="time-num">00</span><span class="time-label">دقائق</span></div>
+                <div class="time-box"><span id="seconds" class="time-num">00</span><span class="time-label">ثواني</span></div>
+            </div>
+        </section>
+
+        <!-- تهنئة الأهل -->
+        <section class="card">
+            <h3 class="section-title"><i class="fa-solid fa-comments-rose"></i> كلمة أهل العروسين</h3>
+            <div id="family-greetings-container" class="greetings-grid">
+                <!-- الأكواد بتنزل هنا ديناميكياً -->
+            </div>
+        </section>
+
+        <!-- تفاصيل الموعد والمكان -->
+        <section class="card">
+            <h3 class="section-title"><i class="fa-regular fa-calendar-check"></i> تفاصيل الحفل</h3>
+            <div class="info-row">
+                <div class="info-icon"><i class="fa-regular fa-calendar"></i></div>
+                <div>
+                    <p style="font-weight: bold;">التاريخ</p>
+                    <p id="event-date" style="font-size: 0.9rem; color: #555;"></p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-icon"><i class="fa-regular fa-clock"></i></div>
+                <div>
+                    <p style="font-weight: bold;">الوقت</p>
+                    <p id="event-time" style="font-size: 0.9rem; color: #555;"></p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div>
+                    <p style="font-weight: bold;">المكان</p>
+                    <p id="venue-name" style="font-size: 0.9rem; color: #555; font-weight: 500;"></p>
+                    <p id="venue-address" style="font-size: 0.85rem; color: #777;"></p>
+                    <a id="venue-map" href="#" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> عرض على الخريطة</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- معرض الصور -->
+        <section class="card">
+            <h3 class="section-title"><i class="fa-regular fa-images"></i> ألبوم الصور</h3>
+            <div id="gallery-container" class="gallery-grid">
+                <!-- الصور بتنزل هنا -->
+            </div>
+        </section>
+
+        <!-- رسائل المهنئين والتعليقات -->
+        <section class="card" style="margin-bottom: 40px;">
+            <h3 class="section-title"><i class="fa-regular fa-comment-dots"></i> تبريكات المهنئين</h3>
+            <div id="comments-container">
+                <!-- التعليقات بتنزل هنا -->
+            </div>
+        </section>
     </div>
 
-    <div class="grid" id="mainGrid">
+    <!-- البار السفلي للتلجرام والكود الرقمي -->
+    <div class="telegram-bar">
+        <div class="code-box">
+            <span>كود الدعوة:</span>
+            <span id="event-code" class="code-val">------</span>
+            <button class="btn-copy" onclick="copyEventCode()" title="نسخ الكود"><i class="fa-regular fa-copy"></i></button>
         </div>
-</div>
+        <a id="tg-link" href="#" target="_blank" class="btn-telegram">
+            <i class="fa-brands fa-telegram"></i> أرسل تهنئتك الآن
+        </a>
+    </div>
 
-<script>
-    async function loadJourney() {
-        try {
-            const response = await fetch('data.json');
-            const data = await response.json();
-            const grid = document.getElementById('mainGrid');
-            
-            let wins = 0;
-            let fails = 0;
-            let totalPassed = 0;
+    <script>
+        // دالة لجلب البيانات وتوزيعها في الصفحة
+        async function loadEventData() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
 
-            data.forEach((day, index) => {
-                let statusClass = 'is-pending';
-                let icon = '⏳';
-                let message = 'بانتظار إنجازك..';
+                // تحديث الهيرو الرئيسي
+                document.getElementById('hero-img').src = data.hero.main_image;
+                document.getElementById('hero-title').innerText = data.hero.title;
+                document.getElementById('groom-name').innerText = data.hero.groom_name;
+                document.getElementById('bride-name').innerText = data.hero.bride_name;
+                document.getElementById('welcome-message').innerText = data.hero.welcome_message;
+                
+                // نوع المناسبة في بادج
+                document.getElementById('event-badge').innerText = data.event_type === "wedding" ? "حفل زفاف" : "مناسبة سعيدة";
 
-                if (day.status === true) {
-                    wins++;
-                    totalPassed++;
-                    statusClass = 'is-success';
-                    icon = '✨';
-                    message = day.msg_success;
-                } else if (day.status === false) {
-                    fails++;
-                    totalPassed++;
-                    statusClass = 'is-fail';
-                    icon = '☁️';
-                    message = day.msg_fail;
+                // تهنئة الأهل
+                const greetingsContainer = document.getElementById('family-greetings-container');
+                data.family_greetings.forEach(g => {
+                    greetingsContainer.innerHTML += `
+                        <div class="greeting-item">
+                            <h4>${g.side}</h4>
+                            <p style="font-size:0.9rem; color:#555;">${g.text}</p>
+                        </div>
+                    `;
+                });
+
+                // التفاصيل والوقت والمكان
+                document.getElementById('event-date').innerText = data.details.date_text;
+                document.getElementById('event-time').innerText = data.details.time_text;
+                document.getElementById('venue-name').innerText = data.details.venue_name;
+                document.getElementById('venue-address').innerText = data.details.venue_address;
+                document.getElementById('venue-map').href = data.details.venue_map_url;
+
+                // معرض الصور
+                const galleryContainer = document.getElementById('gallery-container');
+                data.gallery.forEach(imgUrl => {
+                    galleryContainer.innerHTML += `<img src="${imgUrl}" alt="صورة العروسين">`;
+                });
+
+                // تبريكات المهنئين
+                const commentsContainer = document.getElementById('comments-container');
+                data.congratulations.forEach(c => {
+                    commentsContainer.innerHTML += `
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <span class="comment-name">${c.name}</span>
+                                <span class="comment-badge">${c.relation}</span>
+                            </div>
+                            <p class="comment-text">${c.message}</p>
+                        </div>
+                    `;
+                });
+
+                // اكواد التلجرام والنسخ
+                document.getElementById('event-code').innerText = data.event_code;
+                document.getElementById('tg-link').href = data.telegram_bot_url;
+
+                // تشغيل العداد التنازلي بناءً على التاريخ القادم من الـ JSON
+                initCountdown(data.details.date_iso);
+
+            } catch (error) {
+                console.error("خطأ في قراءة ملف الـ JSON أو البيانات:", error);
+            }
+        }
+
+        // دالة العداد التنازلي
+        function initCountdown(dateString) {
+            const targetDate = new Date(dateString).getTime();
+
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference <= 0) {
+                    clearInterval(interval);
+                    document.querySelector('.countdown-section').innerHTML = "<p style='font-size:1.2rem; font-weight:bold;'>لقد بدأت مراسم الحفل بالفرحة والسرور! 🎉</p>";
+                    return;
                 }
 
-                const card = document.createElement('div');
-                card.className = `day-card ${statusClass}`;
-                card.style.animationDelay = `${index * 0.03}s`;
-                
-                card.innerHTML = `
-                    <span class="day-label">يوم ${day.day}</span>
-                    <span class="day-date">${day.date}</span>
-                    <div class="status-icon">${icon}</div>
-                    <p class="message">${message}</p>
-                `;
-                grid.appendChild(card);
-            });
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            // تحديث الإحصائيات
-            document.getElementById('winCount').innerText = wins;
-            document.getElementById('failCount').innerText = fails;
-            
-            const percentage = totalPassed > 0 ? Math.round((wins / totalPassed) * 100) : 0;
-            document.getElementById('percent').innerText = percentage + "%";
-
-        } catch (error) {
-            console.error("Data load error:", error);
-            document.getElementById('mainGrid').innerHTML = "<h3>يرجى تشغيل الملف عبر خادم محلي (Live Server) لرؤية البيانات.</h3>";
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            }, 1000);
         }
-    }
 
-    loadJourney();
-</script>
+        // دالة نسخ الكود تلقائياً
+        function copyEventCode() {
+            const code = document.getElementById('event-code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('تم نسخ كود التهنئة: ' + code + ' \nيمكنك إرساله الآن للبوت مباشرة.');
+            }).catch(err => {
+                console.error('فشل النسخ:', err);
+            });
+        }
 
+        // تشغيل الجلب فور تحميل الصفحة
+        window.onload = loadEventData;
+    </script>
 </body>
-</html>
+    </html>
