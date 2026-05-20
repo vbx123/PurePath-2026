@@ -2,6 +2,8 @@
   "event_type": "wedding",
   "event_code": "157667",
   "telegram_bot_url": "https://t.me/YourWeddingCelebrationBot",
+  "background_music_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+  "share_text_template": "ندعوكم لحضور حفل زفاف أجمل عروسين (أحمد وسارة) ولتكتمل فرحتنا بحضوركم! شاهد تفاصيل الدعوة والموقع من هنا: ",
   "hero": {
     "title": "دعوة حفل زفاف",
     "groom_name": "أحمد",
