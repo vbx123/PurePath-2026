@@ -20,7 +20,7 @@
             --input-bg: #faf7f2;
         }
 
-        /* ألوان الوضع الليلي السحرية */
+        /* ألوان الوضع الليلي */
         [data-theme="dark"] {
             --bg-color: #121212;
             --text-color: #e0e0e0;
@@ -59,7 +59,7 @@
             z-index: 10;
         }
 
-        /* أزرار التحكم الطائرة (موسيقى + ثيم) */
+        /* أزرار التحكم الطائرة المحدثة */
         .floating-controls {
             position: fixed;
             top: 20px;
@@ -83,10 +83,21 @@
             font-size: 1.2rem;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background-color 0.3s;
         }
 
+        /* أنيميشن لف زر الموسيقى */
         .music-playing {
             animation: spin 4s linear infinite;
+            border-color: #25D366;
+            color: #25D366;
+        }
+
+        /* تمييز زر السكرول النشط */
+        .scroll-active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
 
         /* تساقط الورد */
@@ -99,7 +110,7 @@
             animation: fall linear forwards;
         }
 
-        /* كروت الأنميشن المخفية افتراضياً */
+        /* كروت الأنميشن */
         .animate-scroll {
             opacity: 0;
             transform: translateY(30px);
@@ -285,7 +296,7 @@
             cursor: pointer;
         }
 
-        /* نظام نافذة تكبير الصور (Lightbox) */
+        /* نافذة تكبير الصور (Lightbox) */
         .lightbox {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -401,8 +412,11 @@
         <button class="control-btn" id="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر">
             <i class="fa-solid fa-moon"></i>
         </button>
-        <button class="control-btn" id="music-toggle" onclick="toggleMusic()" title="تشغيل/كتم الصوت">
+        <button class="control-btn" id="music-toggle" onclick="toggleMusic()" title="تشغيل/إيقاف الصوت">
             <i class="fa-solid fa-music"></i>
+        </button>
+        <button class="control-btn" id="scroll-toggle" onclick="toggleAutoScroll()" title="تمرير تلقائي سينمائي">
+            <i class="fa-solid fa-arrow-down"></i>
         </button>
     </div>
 
@@ -496,12 +510,13 @@
     </div>
 
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-close">×</span>
         <img id="lightbox-img" src="" alt="">
     </div>
 
     <script>
         let whatsappShareText = "";
+        let scrollInterval = null; // متغير لحفظ تايمر السكرول
 
         // 1. جلب البيانات وتوزيعها ديناميكياً
         async function initPage() {
@@ -517,10 +532,7 @@
                 document.getElementById('welcome-message').innerText = data.hero.welcome_message;
                 document.getElementById('event-badge').innerText = data.event_type === "wedding" ? "حفل زفاف" : "مناسبة سعيدة";
 
-                // تجهيز نص الواتساب
                 whatsappShareText = data.share_text_template;
-
-                // الموسيقى
                 document.getElementById('bg-audio').src = data.background_music_url;
 
                 // تهنئة الأهل
@@ -540,7 +552,7 @@
                 document.getElementById('venue-address').innerText = data.details.venue_address;
                 document.getElementById('venue-map').href = data.details.venue_map_url;
 
-                // ألبوم الصور مع تفعيل ميزة التكبير (Lightbox)
+                // ألبوم الصور
                 const galleryContainer = document.getElementById('gallery-container');
                 data.gallery.forEach(imgUrl => {
                     galleryContainer.innerHTML += `<img src="${imgUrl}" onclick="openLightbox('${imgUrl}')" alt="صورة الفرح">`;
@@ -559,15 +571,14 @@
                         </div>`;
                 });
 
-                // أكواد التلجرام
                 document.getElementById('event-code').innerText = data.event_code;
                 document.getElementById('tg-link').href = data.telegram_bot_url;
 
-                // تشغيل العداد والميزات البصرية
                 initCountdown(data.details.date_iso);
                 initAutoTheme();
                 setInterval(createPetal, 400);
                 initScrollAnimation();
+                enableAutoplayOnInteraction();
 
             } catch (error) {
                 console.error("حدث خطأ أثناء تحميل البيانات:", error);
@@ -607,20 +618,74 @@
             setTimeout(() => petal.remove(), 7000);
         }
 
-        // 4. ميزة التحكم في تشغيل الموسيقى الخلفية
+        // 4. ميزة تشغيل/إيقاف الموسيقى (التعديل المطلوب)
         function toggleMusic() {
             const audio = document.getElementById('bg-audio');
             const icon = document.getElementById('music-toggle').querySelector('i');
+            const btn = document.getElementById('music-toggle');
+            
             if (audio.paused) {
-                audio.play().catch(e => alert("اضغط أولاً على أي مكان في الصفحة للسماح بتشغيل الصوت."));
-                icon.classList.add('music-playing');
+                audio.play().then(() => {
+                    btn.classList.add('music-playing');
+                }).catch(e => console.log("منع التشغيل التلقائي"));
             } else {
                 audio.pause();
-                icon.classList.remove('music-playing');
+                btn.classList.remove('music-playing');
             }
         }
 
-        // 5. ميزة الوضع الليلي التلقائي واليدوي
+        // 5. ميزة التمرير التلقائي الذكي والناعم (الميزة الجديدة)
+        function toggleAutoScroll() {
+            const btn = document.getElementById('scroll-toggle');
+            const icon = btn.querySelector('i');
+
+            // لو السكرول شغال وعاوزين نوقفه
+            if (scrollInterval) {
+                clearInterval(scrollInterval);
+                scrollInterval = null;
+                btn.classList.remove('scroll-active');
+                icon.className = "fa-solid fa-arrow-down";
+            } else {
+                // لو السكرول واقف وعاوزين نشغله
+                btn.classList.add('scroll-active');
+                icon.className = "fa-solid fa-pause"; // تغيير الأيقونة لعلامة الإيقاف المؤقت
+
+                scrollInterval = setInterval(() => {
+                    window.scrollBy(0, 1); // النزول بكسل واحد في المرة لنعومة تامة
+
+                    // التوقف تلقائياً إذا وصلنا لآخر الصفحة
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+                        clearInterval(scrollInterval);
+                        scrollInterval = null;
+                        btn.classList.remove('scroll-active');
+                        icon.className = "fa-solid fa-arrow-down";
+                    }
+                }, 30); // السرعة (30 ملي ثانية تعطي حركة انسيابية هادئة جداً)
+            }
+        }
+
+        // 6. ميزة بدء تشغيل الموسيقى مع أول حركة للزائر
+        function enableAutoplayOnInteraction() {
+            const audio = document.getElementById('bg-audio');
+            const btn = document.getElementById('music-toggle');
+            
+            const startAudio = () => {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        btn.classList.add('music-playing');
+                    }).catch(err => console.log(err));
+                }
+                document.removeEventListener('click', startAudio);
+                document.removeEventListener('touchstart', startAudio);
+                document.removeEventListener('scroll', startAudio);
+            };
+
+            document.addEventListener('click', startAudio);
+            document.addEventListener('touchstart', startAudio);
+            document.addEventListener('scroll', startAudio);
+        }
+
+        // 7. ميزة الوضع الليلي
         function initAutoTheme() {
             const hour = new Date().getHours();
             if (hour < 6 || hour > 18) {
@@ -640,7 +705,7 @@
             }
         }
 
-        // 6. ميزة الأنميشن عند التمرير
+        // 8. أنيميشن التمرير للكروت
         function initScrollAnimation() {
             const cards = document.querySelectorAll('.animate-scroll');
             const observer = new IntersectionObserver(entries => {
@@ -653,7 +718,7 @@
             cards.forEach(card => observer.observe(card));
         }
 
-        // 7. ميزة مكبر الصور (Lightbox)
+        // 9. تكبير الصور
         function openLightbox(url) {
             document.getElementById('lightbox-img').src = url;
             document.getElementById('lightbox').classList.add('active');
@@ -662,14 +727,14 @@
             document.getElementById('lightbox').classList.remove('active');
         }
 
-        // 8. ميزة المشاركة عبر واتساب
+        // 10. مشاركة واتساب
         function shareOnWhatsApp() {
             const pageUrl = window.location.href;
             const fullMessage = encodeURIComponent(whatsappShareText + pageUrl);
             window.open(`https://api.whatsapp.com/send?text=${fullMessage}`, '_blank');
         }
 
-        // 9. ميزة نسخ كود التحلجرام
+        // 11. نسخ الكود
         function copyEventCode() {
             const code = document.getElementById('event-code').innerText;
             navigator.clipboard.writeText(code).then(() => {
